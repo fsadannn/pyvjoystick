@@ -1,8 +1,9 @@
-# pyvjoy
+# pyvjoystick
 
-pyvjoy is a set of python binding for <a href='https://sourceforge.net/projects/vjoystick/'>vJoy</a>(on github from <a href='https://github.com/jshafer817/vJoy'>jshafer817</a> and <a href='https://github.com/njz3/vJoy/'>njz3</a>). This repository is based off <a href="https://github.com/tidzo/pyvjoy">tidzo</a>'s package.
+pyvjoystick is a set of python binding for <a href='https://sourceforge.net/projects/vjoystick/'>vJoy</a>(on github from <a href='https://github.com/jshafer817/vJoy'>jshafer817</a> and <a href='https://github.com/njz3/vJoy/'>njz3</a>). This repository is based off <a href="https://github.com/tidzo/pyvjoy">tidzo</a>'s package.
 
 
+I will extend the support for others vJoysticks like ScpVBus.
 ### Requirements
 
 Install vJoy from <a href='https://sourceforge.net/projects/vjoystick/'>sourceforge</a> or <a href='https://github.com/njz3/vJoy/'>github</a>. It is recommended to also install the vJoy Monitor and Configure vJoy programs. These should be an option during installation.
@@ -12,9 +13,7 @@ Install vJoy from <a href='https://sourceforge.net/projects/vjoystick/'>sourcefo
 
 Simple! This package is installable by pip
 
-`pip install pyvjoy`
-
-After vJoy and pyvjoy have been installed, you may need to copy the vJoyInterface.dll file from your installation location to the location of the python package.
+`pip install pyvjoystick`
 
 
 ### Usage
