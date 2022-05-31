@@ -1,30 +1,43 @@
 
 class vJoyException(Exception):
-	pass
+    pass
+
+
+class vJoyInvalid_rID_Exception(Exception):
+    pass
+
 
 class vJoyNotEnabledException(vJoyException):
-	pass
+    pass
+
 
 class vJoyFailedToAcquireException(vJoyException):
-	pass
+    pass
+
 
 class vJoyFailedToRelinquishException(vJoyException):
-	pass
+    pass
 
 
 class vJoyButtonException(vJoyException):
-	pass
+    pass
+
 
 class vJoyDriverMismatchException(vJoyException):
-	pass
+    pass
+
 
 class vJoyInvalidAxisException(vJoyException):
-	pass
+    pass
+
 
 class vJoyInvalidPovValueException(vJoyException):
-	pass
+    pass
+
 
 class vJoyInvalidPovIDException(vJoyException):
-	pass
+    pass
 
 
+class vJoyInvalidAxisValueException(vJoyException):
+    pass
