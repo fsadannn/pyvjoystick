@@ -19,7 +19,8 @@ class Limits:
 
 class VJoyDevice:
     """Object-oriented API for a vJoy Device"""
-    __slots__ = ('rID', '_data', 'available_axis', 'axis_limits')
+    __slots__ = ('rID', '_data', 'available_axis',
+                 'axis_limits', 'number_of_buttons')
 
     def __init__(self, rID: int = None, data=None):
         """Constructor"""
@@ -61,6 +62,7 @@ class VJoyDevice:
 
         self.available_axis = available_axis
         self.axis_limits = axis_limits
+        self.number_of_buttons = _sdk.GetVJDButtonNumber(rID)
 
     def set_button(self, buttonID, state):
         """Set a given button (numbered from 1) to On (1 or True) or Off (0 or False)"""
