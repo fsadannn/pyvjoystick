@@ -6,6 +6,7 @@ from .exceptions import *
 
 class VJoyDevice:
     """Object-oriented API for a vJoy Device"""
+    __slots__ = ('rID', '_data')
 
     def __init__(self, rID: int = None, data=None):
         """Constructor"""
@@ -16,16 +17,14 @@ class VJoyDevice:
             raise vJoyInvalid_rID_Exception
 
         if data:
-            self.data = data
+            self._data = data
         else:
             # TODO maybe - have self.data as a wrapper object containing the Struct
-            self.data = _sdk.CreateDataStructure(self.rID)
+            self._data = _sdk.CreateDataStructure(self.rID)
 
         try:
             _sdk.vJoyEnabled()
             _sdk.AcquireVJD(rID)
-
-        # TODO FIXME
         except vJoyException:
             raise
 
@@ -50,7 +49,7 @@ class VJoyDevice:
 
     def reset_data(self):
         """Reset the data Struct to default (does not change vJoy device at all directly)"""
-        self.data = _sdk.CreateDataStructure(self.rID)
+        self._data = _sdk.CreateDataStructure(self.rID)
 
     def reset_buttons(self):
         """Reset all buttons on the vJoy Device to default"""
@@ -62,7 +61,7 @@ class VJoyDevice:
 
     def update(self):
         """Send the stored Joystick data to the device in one go (the 'efficient' method)"""
-        return _sdk.UpdateVJD(self.rID, self.data)
+        return _sdk.UpdateVJD(self.rID, self._data)
 
     def __del__(self):
         # free up the controller before losing access

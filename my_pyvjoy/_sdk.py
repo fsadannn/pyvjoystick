@@ -1,6 +1,5 @@
 import sys
 from ctypes import CDLL, Structure, c_byte, c_int, c_long, cdll, pointer, wintypes
-from functools import lru_cache
 from pathlib import Path
 
 from .constants import DLL_FILENAME, JOYSTICK_API_VERSION, VJD_STATUS
@@ -26,8 +25,6 @@ try:
 except OSError:
     sys.exit("Unable to load vJoy SDK DLL.  Ensure that %s is present" %
              DLL_FILENAME)
-
-_CACHE_SIZE = 16
 
 
 def GetNumberExistingVJD() -> int:
@@ -104,25 +101,21 @@ def RelinquishVJD(rID):
         return True
 
 
-@lru_cache(_CACHE_SIZE)
 def GetVJDButtonNumber(rID: int) -> int:
     """Get the number of buttons defined in the specified VDJ"""
     return _vj.GetVJDButtonNumber(rID)
 
 
-@lru_cache(_CACHE_SIZE)
 def GetVJDDiscPovNumber(rID: int) -> int:
     """Get the number of discrete-type POV hats defined in the specified VDJ"""
     return _vj.GetVJDDiscPovNumber(rID)
 
 
-@lru_cache(_CACHE_SIZE)
 def GetVJDContPovNumber(rID: int) -> int:
     """Get the number of continue-type POV hats defined in the specified VDJ"""
     return _vj.GetVJDContPovNumber(rID)
 
 
-@lru_cache(_CACHE_SIZE)
 def GetVJDAxisExist(rID: int, AxisId: int) -> bool:
     """Test if given axis defined in the specified VDJ"""
     result = _vj.GetVJDAxisExist(rID, AxisId)
@@ -133,7 +126,6 @@ def GetVJDAxisExist(rID: int, AxisId: int) -> bool:
     return True
 
 
-@lru_cache(_CACHE_SIZE)
 def GetVJDAxisMax(rID: int, AxisId: int) -> int:
     """Get logical Maximum value for a given axis defined in the specified VDJ"""
     data = c_long(0)
@@ -147,7 +139,6 @@ def GetVJDAxisMax(rID: int, AxisId: int) -> int:
     return data.value
 
 
-@lru_cache(_CACHE_SIZE)
 def GetVJDAxisMin(rID: int, AxisId: int) -> int:
     """Get logical Minimum value for a given axis defined in the specified VDJ"""
     data = c_long(0)
