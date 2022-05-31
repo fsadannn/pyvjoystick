@@ -1,8 +1,9 @@
 import sys
 from ctypes import CDLL, Structure, c_byte, c_int, c_long, cdll, pointer, wintypes
 from pathlib import Path
+from typing import Dict
 
-from .constants import DLL_FILENAME, JOYSTICK_API_VERSION, VJD_STATUS
+from .constants import DLL_FILENAME, HID_USAGE, JOYSTICK_API_VERSION, VJD_STATUS
 from .exceptions import (
     vJoyButtonException,
     vJoyDriverMismatchException,
@@ -82,7 +83,7 @@ def AcquireVJD(rID):
         status = GetVJDStatus(rID)
         if status != VJD_STATUS.FREE:
             raise vJoyFailedToAcquireException(
-                "Cannot acquire vJoy Device because it is not in FREE")
+                f"Cannot acquire vJoy Device because it is not in FREE({status})")
 
         else:
             raise vJoyFailedToAcquireException(f"Status {status}")
@@ -161,7 +162,7 @@ def SetBtn(state, rID, buttonID):
         return True
 
 
-def SetAxis(AxisValue, rID, AxisID, validate: bool = True):
+def SetAxis(AxisValue, rID, AxisID, validate: bool = False):
     """Sets the value of a vJoy Axis  SetAxis(value,rID,AxisID)"""
 
     if validate:
@@ -226,6 +227,11 @@ def UpdateVJD(rID, data):
     return _vj.UpdateVJD(rID, pointer(data))
 
 
+def GetPosition(rID, data):
+    """V3 only. Read the position data of the specified vJoy Device"""
+    return _vj.GetPosition(rID, pointer(data))
+
+
 def CreateDataStructure(rID):
     version = get_api_version()
 
@@ -239,6 +245,15 @@ def CreateDataStructure(rID):
     data.set_defaults(rID)
     return data
 
+
+FIELDS_MAP: Dict[HID_USAGE, str] = {
+    HID_USAGE.X: 'wAxisX',
+    HID_USAGE.Y: 'wAxisY',
+    HID_USAGE.Z: 'wAxisZ',
+    HID_USAGE.RX: 'wAxisXRot',
+    HID_USAGE.RY: 'wAxisYRot',
+    HID_USAGE.RZ: 'wAxisZRot',
+}
 
 _v1_fields = [
     # Index of device. 1 - based.

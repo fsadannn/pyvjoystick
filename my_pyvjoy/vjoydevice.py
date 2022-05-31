@@ -1,12 +1,25 @@
+from typing import Dict, List
 
 from . import _sdk
-from .constants import *
-from .exceptions import *
+from .constants import HID_USAGE
+from .exceptions import vJoyInvalid_rID_Exception
+
+
+class Limits:
+    __slots__ = ('minValue', 'maxValue', 'mean')
+
+    def __init__(self, minValue: int, maxValue: int) -> None:
+        self.minValue = minValue
+        self.maxValue = maxValue
+        self.mean = (maxValue + minValue) // 2
+
+    def __repr__(self) -> str:
+        return f'{self.__class__.__name__}< minValue={self.minValue}, maxValue={self.maxValue} >'
 
 
 class VJoyDevice:
     """Object-oriented API for a vJoy Device"""
-    __slots__ = ('rID', '_data')
+    __slots__ = ('rID', '_data', 'available_axis', 'axis_limits')
 
     def __init__(self, rID: int = None, data=None):
         """Constructor"""
@@ -22,11 +35,32 @@ class VJoyDevice:
             # TODO maybe - have self.data as a wrapper object containing the Struct
             self._data = _sdk.CreateDataStructure(self.rID)
 
-        try:
-            _sdk.vJoyEnabled()
-            _sdk.AcquireVJD(rID)
-        except vJoyException:
-            raise
+        _sdk.vJoyEnabled()
+        _sdk.AcquireVJD(rID)
+        _sdk.ResetVJD(rID)
+
+        available_axis: List[HID_USAGE] = []
+        axis_limits: Dict[HID_USAGE, Limits] = {}
+
+        FIELDS_MAP = _sdk.FIELDS_MAP
+
+        for hid in HID_USAGE:
+            if _sdk.GetVJDAxisExist(rID, hid.value):
+                try:
+                    min_val = _sdk.GetVJDAxisMin(rID, hid.value)
+                    max_val = _sdk.GetVJDAxisMax(rID, hid.value)
+                except:
+                    continue
+                limit = Limits(minValue=min_val, maxValue=max_val)
+                axis_limits[hid] = limit
+                available_axis.append(hid)
+                if hid in FIELDS_MAP:
+                    setattr(self._data, FIELDS_MAP[hid], limit.mean)
+
+        _sdk.UpdateVJD(rID, self._data)
+
+        self.available_axis = available_axis
+        self.axis_limits = axis_limits
 
     def set_button(self, buttonID, state):
         """Set a given button (numbered from 1) to On (1 or True) or Off (0 or False)"""
@@ -62,6 +96,10 @@ class VJoyDevice:
     def update(self):
         """Send the stored Joystick data to the device in one go (the 'efficient' method)"""
         return _sdk.UpdateVJD(self.rID, self._data)
+
+    def read_data(self):
+        """Read the stored Joystick data to the data structure"""
+        return _sdk.GetPosition(self.rID, self._data)
 
     def __del__(self):
         # free up the controller before losing access
