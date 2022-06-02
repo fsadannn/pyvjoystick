@@ -1,5 +1,4 @@
-__all__ = ['constants', 'exceptions']
+from . import vjoy
+from .vjoy import VJoyDevice
 
-from . import _sdk
-from .constants import *
-from .vjoydevice import VJoyDevice
+__all__ = ['vjoy', 'VJoyDevice']

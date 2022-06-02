@@ -3,6 +3,7 @@ from ctypes import CDLL, Structure, c_byte, c_int, c_long, cdll, pointer, wintyp
 from pathlib import Path
 from typing import Dict
 
+from ..utils import lazy_eval
 from .constants import DLL_FILENAME, HID_USAGE, JOYSTICK_API_VERSION, VJD_STATUS
 from .exceptions import (
     vJoyButtonException,
@@ -16,16 +17,21 @@ from .exceptions import (
     vJoyInvalidPovValueException,
     vJoyNotEnabledException,
 )
+from .utils import get_api_version, get_dll_path
 
-from.utils import get_api_version, get_dll_path
+_dll_path = str(Path(get_dll_path()) / DLL_FILENAME)
 
-dll_path = str(Path(get_dll_path()) / DLL_FILENAME)
 
-try:
-    _vj: CDLL = cdll.LoadLibrary(dll_path)
-except OSError:
-    sys.exit("Unable to load vJoy SDK DLL.  Ensure that %s is present" %
-             DLL_FILENAME)
+def _load_sdk(_dll_path: str):
+    try:
+        _vj: CDLL = cdll.LoadLibrary(_dll_path)
+    except OSError:
+        sys.exit("Unable to load vJoy SDK DLL.  Ensure that %s is present" %
+                 DLL_FILENAME)
+
+
+# lazy load sdk, is loaded the first time is used
+_vj = lazy_eval(locals(), '_vj', _load_sdk, _dll_path)
 
 
 def GetNumberExistingVJD() -> int:
