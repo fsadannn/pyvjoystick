@@ -1,11 +1,11 @@
 [tool.poetry]
 name = "pyvjoystick"
-version = "1.1.2"
+version = "1.1.2.1"
 description = "Python bindings for vJoy"
 authors = ["fsadannn <fsadannn@gmail.com>"]
 license = "MIT"
 readme = "Readme.md"
-repository = "https://github.com/fsadannn/pyvjoy"
+repository = "https://github.com/fsadannn/pyvjoystick"
 classifiers = [
     "Programming Language :: Python :: 3",
     "Topic :: Software Development",
