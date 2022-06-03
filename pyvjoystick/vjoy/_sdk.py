@@ -29,6 +29,8 @@ def _load_sdk(_dll_path: str):
         sys.exit("Unable to load vJoy SDK DLL.  Ensure that %s is present" %
                  DLL_FILENAME)
 
+    return _vj
+
 
 # lazy load sdk, is loaded the first time is used
 _vj = lazy_eval(locals(), '_vj', _load_sdk, _dll_path)

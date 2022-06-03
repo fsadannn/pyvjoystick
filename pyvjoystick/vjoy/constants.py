@@ -1,4 +1,4 @@
-from enum import Enum
+from enum import Enum, IntEnum
 
 DLL_FILENAME = "vJoyInterface.dll"
 VJOY_REGISTRY_PATH = r"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{8E31F76F-74C3-47F1-9550-E041EEDC5FBB}_is1"
@@ -7,7 +7,7 @@ ARCH_86 = 'DllX86Location'
 
 
 # HID Descriptor definitions(ported from public.h)
-class HID_USAGE(Enum):
+class HID_USAGE(IntEnum):
     X = 0x30
     Y = 0x31
     Z = 0x32
@@ -33,7 +33,7 @@ HID_USAGE_HIGH = HID_USAGE.POV
 
 
 # ported from VjdStat in vjoyinterface.h
-class VJD_STATUS(Enum):
+class VJD_STATUS(IntEnum):
     OWN = 0  # The  vJoy Device is owned by this application.
     # The  vJoy Device is NOT owned by any application (including this one).
     FREE = 1
@@ -44,7 +44,7 @@ class VJD_STATUS(Enum):
     UNKN = 4  # Unknown
 
 
-class JOYSTICK_API_VERSION(Enum):
+class JOYSTICK_API_VERSION(IntEnum):
     V1 = 1
     V2 = 2
     V3 = 3
