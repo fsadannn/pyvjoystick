@@ -3,7 +3,6 @@ import warnings
 import winreg
 from pathlib import Path
 from platform import architecture
-from typing import Callable
 
 from .constants import ARCH_64, ARCH_86, JOYSTICK_API_VERSION, VJOY_REGISTRY_PATH
 
@@ -64,23 +63,3 @@ def get_api_version() -> JOYSTICK_API_VERSION:
         return JOYSTICK_API_VERSION.V2
 
     return JOYSTICK_API_VERSION.V3
-
-
-class lazy_eval:
-    __slots__ = ('_func', '_context', '_variable_name', '_args', '_kwargs')
-
-    def __init__(self, context: dict, variable_name: str, func: Callable, *args, **kwargs):
-        self._func = func
-        self._context = context
-        self._variable_name = variable_name
-        self._args = args
-        self._kwargs = kwargs
-
-    def __getattr__(self, attr):
-        print(f'get arrt {attr}')
-        result = self._func(*self._args, **self._kwargs)
-        updated_context = {self._variable_name: result}
-
-        self._context.update(updated_context)
-
-        return getattr(result, attr)

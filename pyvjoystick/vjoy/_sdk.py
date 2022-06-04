@@ -26,8 +26,8 @@ def _load_sdk(_dll_path: str):
     try:
         _vj: CDLL = cdll.LoadLibrary(_dll_path)
     except OSError:
-        sys.exit("Unable to load vJoy SDK DLL.  Ensure that %s is present" %
-                 DLL_FILENAME)
+        sys.exit(
+            f"Unable to load vJoy SDK DLL.  Ensure that {DLL_FILENAME} is present")
 
     return _vj
 
@@ -61,8 +61,8 @@ def vJoyEnabled():
 
     if result == 0:
         raise vJoyNotEnabledException
-    else:
-        return True
+
+    return True
 
 
 def DriverMatch():
@@ -71,8 +71,8 @@ def DriverMatch():
 
     if result == 0:
         raise vJoyDriverMismatchException
-    else:
-        return True
+
+    return True
 
 
 def GetVJDStatus(rID) -> VJD_STATUS:
@@ -93,11 +93,9 @@ def AcquireVJD(rID):
             raise vJoyFailedToAcquireException(
                 f"Cannot acquire vJoy Device because it is not in FREE({status})")
 
-        else:
-            raise vJoyFailedToAcquireException(f"Status {status}")
+        raise vJoyFailedToAcquireException(f"Status {status}")
 
-    else:
-        return True
+    return True
 
 
 def RelinquishVJD(rID):
@@ -106,8 +104,8 @@ def RelinquishVJD(rID):
     result = _vj.RelinquishVJD(rID)
     if result == 0:
         raise vJoyFailedToRelinquishException
-    else:
-        return True
+
+    return True
 
 
 def GetVJDButtonNumber(rID: int) -> int:
@@ -166,8 +164,8 @@ def SetBtn(state, rID, buttonID):
     result = _vj.SetBtn(state, rID, buttonID)
     if result == 0:
         raise vJoyButtonException
-    else:
-        return True
+
+    return True
 
 
 def SetAxis(AxisValue, rID, AxisID, validate: bool = False):
@@ -181,11 +179,12 @@ def SetAxis(AxisValue, rID, AxisID, validate: bool = False):
             raise vJoyInvalidAxisValueException
 
     result = _vj.SetAxis(AxisValue, rID, AxisID)
+
     if result == 0:
         # TODO raise specific exception
         raise vJoyException
-    else:
-        return True
+
+    return True
 
 
 def SetDiscPov(PovValue, rID, PovID):
@@ -251,6 +250,7 @@ def CreateDataStructure(rID):
         data = _JOYSTICK_POSITION_V1()
 
     data.set_defaults(rID)
+
     return data
 
 
