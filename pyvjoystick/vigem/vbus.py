@@ -24,8 +24,8 @@ class VBus:
         """virtual private constructor"""
         if VBus.__shared_instance is not None:
             raise Exception("This class is a singleton class !")
-        else:
-            VBus.__shared_instance = self
+
+        VBus.__shared_instance = self
 
         self._bus_pointer = None
 

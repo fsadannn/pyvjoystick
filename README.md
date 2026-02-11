@@ -28,7 +28,7 @@ Simple! This package is installable by pip
 With this library you can easily set Axis and Button values on any vJoy device. Low-level bindings are provided in `pyvjoy._sdk`.
 
 ```python
-from pyvjoystick import vjoy
+import pyvjoystick.vjoy as vjoy
 
 # Pythonic API, item-at-a-time
 j = vjoy.VJoyDevice(1)
@@ -77,7 +77,7 @@ j.update()
 The following python script creates a virtual XBox360 gamepad:
 
 ```python
-from pyvjoystick import vigem as vg
+import pyvjoystick.vigem as vg
 
 gamepad = vg.VX360Gamepad()
 ```

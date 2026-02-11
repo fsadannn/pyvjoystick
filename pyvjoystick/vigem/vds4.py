@@ -13,9 +13,6 @@ from .utils import check_err
 class VDS4Gamepad(VGamepad):
     __slots__ = ()
 
-    def __init__(self) -> None:
-        super().__init__()
-
     def _target_alloc(self):
         return _sdk.vigem_target_ds4_alloc()
 

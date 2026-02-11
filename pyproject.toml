@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pyvjoystick"
-version = "1.1.2.1"
+version = "1.2.0"
 description = "Python bindings for vJoy"
 authors = ["fsadannn <fsadannn@gmail.com>"]
 license = "MIT"

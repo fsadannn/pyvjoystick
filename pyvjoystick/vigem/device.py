@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod
-from ctypes import CFUNCTYPE, Structure, c_int, c_ubyte, c_void_p
+from ctypes import CFUNCTYPE, Structure, c_ubyte, c_void_p
 from inspect import signature
-from typing import Any
 
 from . import _sdk
 from .constants import VIGEM_TARGET_TYPE
@@ -138,7 +137,7 @@ class VGamepad(ABC):
 
         :param: an of the button id, e.g. DS4_SPECIAL_BUTTONS.DS4_SPECIAL_BUTTON_TOUCHPAD
         """
-        NotImplementedError
+        raise NotImplementedError
 
     @abstractmethod
     def left_trigger(self, value: int):
@@ -236,8 +235,8 @@ class VGamepad(ABC):
         :param: a function of the form: my_func(client, target, large_motor, small_motor, led_number, user_data)
         """
         if not signature(callback_function) == signature(dummy_callback):
-            raise TypeError("Needed callback function signature: {}, but got: {}".format(
-                signature(dummy_callback), signature(callback_function)))
+            raise TypeError(
+                f"Needed callback function signature: {signature(dummy_callback)}, but got: {signature(callback_function)}")
 
         # keep its reference, otherwise the program will crash when a callback is made.
         self._callback_func = self._FUNC_TYPE(callback_function)
