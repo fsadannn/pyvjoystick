@@ -136,7 +136,7 @@ gamepad.update()
 
 Using a virtual DS4 gamepad is similar to X360:
 ```python
-from pyvjoystick import vigem as vg
+import pyvjoystick.vigem as vg
 
 gamepad = vg.VDS4Gamepad()
 ```
